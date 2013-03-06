@@ -1,0 +1,8 @@
+{:port 58615
+ :location-prefix "SIP/"
+ :ami {:host ""
+       :username ""
+       :password ""}
+ ;; :poll-timeout-seconds 30
+ ;; :unsub-delay-seconds 15
+ }
