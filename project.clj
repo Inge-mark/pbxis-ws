@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure "1.5.0"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
-                 [com.ingemark/pbxis "0.5.1-SNAPSHOT"]
+                 [com.ingemark/pbxis "0.5.1-alpha1"]
                  [net.cgrand/moustache "1.2.0-alpha2"]
                  [hiccup "1.0.2"]
                  [ring/ring-core "1.1.0" :exclusions [javax.servlet/servlet-api]]
