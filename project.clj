@@ -11,7 +11,7 @@
                  [net.cgrand/moustache "1.2.0-alpha1"]
                  [hiccup "1.0.2"]
                  [ring/ring-core "1.1.0" :exclusions [javax.servlet/servlet-api]]
-                 [aleph "0.3.0-SNAPSHOT"]
+                 [aleph "0.3.0-beta14"]
                  [org.slf4j/slf4j-api "1.7.2"]
                  [ch.qos.logback/logback-classic "1.0.9"]]
   :jvm-opts ["-Dlogback.configurationFile=logback.xml"]

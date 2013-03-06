@@ -134,7 +134,7 @@
 (def app-main
   (ah/wrap-ring-handler
    (app
-    :middlewares [wrap-file-info (wrap-file "static-content") wrap-json-params wrap-log-request]
+    :middlewares [wrap-file-info (wrap-file "static-content") wrap-json-params]
     ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
     ["stop"] {:post {:response (ok (stop))}}
     [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
