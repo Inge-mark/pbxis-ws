@@ -37,10 +37,12 @@
     (if-let [body (and (json-request? req) (:body req))]
       (let [bstr (slurp body)
             json-params (json/read-str bstr :key-fn keyword)]
-        (handler (spy "json-req" (assoc req
-                                   :json-params json-params
-                                   :params (merge (:params req) json-params)))))
+        (handler (assoc req :json-params json-params, :params (merge (:params req) json-params))))
       (handler req))))
+
+(defn- wrap-log-request [handle]
+  #(as-> % x (do (logdebug "HTTP request" (:request-method x) (:uri x) (:params x)) x)
+         (handle x) (spy "HTTP response" x)))
 
 (defn- ok [resp]
   (m/run-pipeline
@@ -117,8 +119,6 @@
         (m/join (m/map* #(spy "Send WebSocket" (af/encode-json->string %)) sinkch)
                 ch)))))
 
-(defn- wrap-log-request [handle] #(->> % (spy "HTTP request") handle (spy "HTTP response")))
-
 (defonce stop-server (atom nil))
 
 (defn stop []
@@ -134,7 +134,8 @@
 (def app-main
   (ah/wrap-ring-handler
    (app
-    :middlewares [wrap-file-info (wrap-file "resources/static-content") wrap-json-params]
+    :middlewares [wrap-file-info (wrap-file "resources/static-content") wrap-json-params
+                  wrap-log-request]
     ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
     ["stop"] {:post {:response (ok (stop))}}
     [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
