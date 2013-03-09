@@ -3,7 +3,7 @@
   :url "http://www.inge-mark.hr"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :repositories [["ingemark" {:url "http://dev.inge-mark.hr/downloads/m2"}]]
+  :lein-release {:deploy-via :clojars}
 
   :dependencies [[org.clojure/clojure "1.5.0"]
                  [org.clojure/core.incubator "0.1.2"]
