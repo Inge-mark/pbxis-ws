@@ -19,7 +19,7 @@
            [net.cgrand.moustache :refer (app)]
            (aleph [http :as ah] [formats :as af])
            [lamina.core :as m]
-           (ring.middleware [file :refer (wrap-file)]
+           (ring.middleware [resource :refer (wrap-resource)]
                             [file-info :refer (wrap-file-info)]))
   (import java.util.concurrent.TimeUnit))
 
@@ -134,7 +134,7 @@
 (def app-main
   (ah/wrap-ring-handler
    (app
-    :middlewares [wrap-file-info (wrap-file "resources/static-content") wrap-json-params
+    :middlewares [wrap-file-info (wrap-resource "static-content") wrap-json-params
                   wrap-log-request]
     ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
     ["stop"] {:post {:response (ok (stop))}}
