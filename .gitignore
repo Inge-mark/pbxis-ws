@@ -2,4 +2,5 @@ pbxis-config.clj
 logs
 checkouts
 target
+pom.xml
 .lein-repl-history
