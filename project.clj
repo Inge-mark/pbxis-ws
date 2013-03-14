@@ -3,6 +3,7 @@
   :url "http://www.inge-mark.hr"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :lein-release {:deploy-via :lein-install}
   :aliases {"bundle-helper" "bundle-pbxis-ws"}
   :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.1"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
