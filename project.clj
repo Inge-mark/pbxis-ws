@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :lein-release {:deploy-via :none}
   :aliases {"bundle-helper" "bundle-pbxis-ws"}
-  :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.1"]]
+  :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.2"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
