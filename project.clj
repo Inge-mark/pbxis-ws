@@ -4,6 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :lein-release {:deploy-via :none}
+  :repositories [["releases" "s3p://pbxis-ws/releases"]]
   :aliases {"bundle-helper" "bundle-pbxis-ws"}
   :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.3-SNAPSHOT"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
