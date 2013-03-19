@@ -6,7 +6,7 @@
   :lein-release {:deploy-via :none}
   :deploy-repositories [["bundle" "s3p://www.inge-mark.hr/pbxis-ws"]]
   :aliases {"bundle-helper" "bundle-pbxis-ws"}
-  :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.3-SNAPSHOT"]]
+  :plugins [[com.ingemark/lein-bundle-pbxis-ws "0.1.3"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
