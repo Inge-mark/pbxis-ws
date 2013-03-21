@@ -31,19 +31,23 @@ An event is represented as a JSON object, such as `{"type":"queueCount", "queue"
 
 `POST /stop`
 
-### Update agent status in a queue
+### Execute an action against a queue
 
-`POST /queue/<action>/<agent>`
+`POST /queue/<action>`
 
-There are three actions available:
+These are some of the available actions:
 
-- `add`: add the agent to the queue (log him on). Parameters: `memberName`, `paused` (both optional);
+- `add`: add the agent to the queue (log him on). Parameters: `agent` (required), `memberName`, `paused` (optional);
 
-- `remove`: remove the agent from the queue (log him off);
+- `remove`: remove the agent from the queue (log him off). Parameter: `agent`;
 
-- `pause`: set the *paused* status of a logged-on agent. Parameter: `paused`.
+- `pause`: set the *paused* status of a logged-on agent. Parameters: `agent`, `paused`;
+
+- `reset`: reset queue statistics.
 
 Explanation of parameters:
+
+- `agent`: the agent on whose behalf the action is executed;
 
 - `memberName`: the name of the agent that will be used by Asterisk;
 
@@ -118,6 +122,10 @@ The PBXIS web service can be used to implemented a scenario like the following:
 
 Another use case is a supervisor application that monitors the activities of all the agents in the call center. The HTML client provided with this package is a very simple example of such an application.
 
+
+## Release notes
+
+0.1.12: changed /queue/<action> API: agent is now a query param.
 
 
 ## License
