@@ -9,7 +9,7 @@
             "publish-checkout" ["thrush" "bundle," "upload" "bundle"]
             "publish-latest" ["with-checkout" ":latest" "publish-checkout"]}
   :plugins [[lein-thrush "0.1.1"]
-            [com.ingemark/lein-release "2.0.9"]
+            [com.ingemark/lein-release "2.0.16"]
             [com.ingemark/lein-with-checkout "0.1.0"]
             [com.ingemark/lein-bundle-pbxis-ws "0.1.4"]
             [com.ingemark/lein-upload "0.1.2"]]
