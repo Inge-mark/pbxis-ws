@@ -31,21 +31,39 @@ An event is represented as a JSON object, such as `{"type":"queueCount", "queue"
 
 `POST /stop`
 
+### Fetch queue status
+
+`GET /queue/status`
+
+**Parameter**: `queue` (optional) the queue for which to fetch status. If missing, returns the status of all queues.
+
+**JSON response**:
+
+```JSON
+{"queue":"<name>",
+ "members": [{"location":"<agent_location", <more_member_properties>}, ...],
+ <more_queue_properties>}
+```
+See the AsteriskJava documentation for the explanation of [queue](http://www.asterisk-java.org/1.0.0.M3/apidocs/org/asteriskjava/manager/event/QueueParamsEvent.html) and [member](http://www.asterisk-java.org/1.0.0.M3/apidocs/org/asteriskjava/manager/event/QueueMemberEvent.html) properties.
+
+
 ### Execute an action against a queue
 
 `POST /queue/<action>`
 
 These are some of the available actions:
 
-- `add`: add the agent to the queue (log him on). Parameters: `agent` (required), `memberName`, `paused` (optional);
+- `add`: add the agent to the queue (log him on). Parameters: `queue`, `agent` (required); `memberName`, `paused` (optional);
 
-- `remove`: remove the agent from the queue (log him off). Parameter: `agent`;
+- `remove`: remove the agent from the queue (log him off). Parameters: `queue`, `agent` (required);
 
-- `pause`: set the *paused* status of a logged-on agent. Parameters: `agent`, `paused`;
+- `pause`: set the *paused* status of a logged-on agent. Parameters: `queue`, `agent`, `paused` (required);
 
-- `reset`: reset queue statistics.
+- `reset`: reset queue statistics. Parameter: `queue` (optional).
 
 Explanation of parameters:
+
+- `queue`: the queue against which the action is executed;
 
 - `agent`: the agent on whose behalf the action is executed;
 
@@ -125,7 +143,9 @@ Another use case is a supervisor application that monitors the activities of all
 
 ## Release notes
 
-0.1.12: changed /queue/<action> API: agent is now a query param.
+0.1.12
+ - changed /queue/<action> API: agent is now a query param;
+ - added /queue/status to fetch queue status.
 
 
 ## License
