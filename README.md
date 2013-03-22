@@ -143,10 +143,12 @@ Another use case is a supervisor application that monitors the activities of all
 
 ## Release notes
 
-0.1.12
- - changed /queue/<action> API: agent is now a query param;
- - added /queue/status to fetch queue status.
+0.2.4
+ - changed /queue/<action> API: agent is now a query param
+ - added /queue-status to fetch queue status
 
+0.2.5
+ - changed /queue-status to /queue/status
 
 ## License
 
