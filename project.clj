@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :lein-release {:deploy-via :none}
-  :deploy-repositories [["bundle" "forge://mtopolnik@pbxis-ws"]]
+  :deploy-repositories [["bundle" "forge://pbxis-ws"]]
   :aliases {"bundle" "bundle-pbxis-ws"
             "publish-checkout" ["thrush" "bundle," "upload" "bundle"]
             "publish-latest" ["with-checkout" ":latest" "publish-checkout"]}
@@ -12,7 +12,7 @@
             [com.ingemark/lein-release "2.0.16"]
             [com.ingemark/lein-with-checkout "0.1.0"]
             [com.ingemark/lein-bundle-pbxis-ws "0.1.4"]
-            [com.ingemark/lein-upload "0.1.2"]]
+            [com.ingemark/lein-upload "0.1.3"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
