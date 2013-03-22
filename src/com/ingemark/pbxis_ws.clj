@@ -144,7 +144,7 @@
     ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
     ["originate" src dest] {:post {:params [callerId]
                                    :response (ok (px/originate-call src dest callerId))}}
-    ["queue-status"] {:get {:params [queue] :response (ok (px/queue-status queue))}}
+    ["queue" "status"] {:get {:params [queue] :response (ok (px/queue-status queue))}}
     ["queue" action]
     {:post #(ok (as-> (keyword action) action
                       (px/queue-action action
