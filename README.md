@@ -6,6 +6,10 @@ Exposes functions of the [PBXIS](https://github.com/inge-mark/pbxis) library as 
 
 will open a page that tracks agents 147, 149 (these are their extension numbers) and queues q1, q2, using WebSocket to receive the event stream.
 
+##Download
+
+Fetch the tarball from [SourceForge](https://sourceforge.net/projects/pbxis-ws/files/).
+
 ## API -- some general notes
 
 ### Request parameters
