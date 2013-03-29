@@ -15,11 +15,13 @@
            [com.ingemark.pbxis-ws.homepage :refer :all]
            [clojure.java.io :as io] [clojure.string :as s] [clojure.data.json :as json]
            [clojure.core.incubator :refer (-?> dissoc-in)]
-           [ring.util.response :as r]
            [net.cgrand.moustache :refer (app)]
            (aleph [http :as ah] [formats :as af])
            [lamina.core :as m]
-           (ring.middleware [resource :refer (wrap-resource)]
+           [ring.util.response :as r]
+           (ring.middleware [params :refer (wrap-params)]
+                            [keyword-params :refer (wrap-keyword-params)]
+                            [resource :refer (wrap-resource)]
                             [file-info :refer (wrap-file-info)]))
   (import java.util.concurrent.TimeUnit))
 
@@ -32,17 +34,21 @@
   (if-let [#^String type (:content-type req)]
     (not (empty? (re-find #"^application/(vnd.+)?json" type)))))
 
-(defn wrap-json-params [handler]
+(defn wrap-json-params [handle]
   (fn [req]
     (if-let [body (and (json-request? req) (:body req))]
       (let [bstr (slurp body)
-            json-params (json/read-str bstr :key-fn keyword)]
-        (handler (assoc req :json-params json-params, :params (merge (:params req) json-params))))
-      (handler req))))
+            json-params (json/read-str bstr)] #_[:key-fn keyword]
+        (handle (assoc req :json-params json-params, :params (merge (:params req) json-params))))
+      (handle req))))
 
 (defn- wrap-log-request [handle]
   #(as-> % x (do (logdebug "HTTP request" (:request-method x) (:uri x) (:params x)) x)
          (handle x) (spy "HTTP response" x)))
+
+(def ^:dynamic *mocking-on* false)
+
+(defn- wrap-mockable [handle] #(if *mocking-on* {:status 200} (handle %)))
 
 (defn- ok [resp]
   (m/run-pipeline
@@ -134,8 +140,9 @@
 (def app-main
   (ah/wrap-ring-handler
    (app
-    :middlewares [wrap-file-info (wrap-resource "static-content") wrap-json-params
-                  wrap-log-request]
+    :middlewares [wrap-params wrap-json-params wrap-keyword-params
+                  wrap-file-info (wrap-resource "static-content")
+                  wrap-log-request wrap-mockable]
     ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
     ["stop"] {:post {:response (ok (stop))}}
     [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
@@ -147,14 +154,15 @@
     ["queue" "status"] {:get {:params [queue] :response (ok (px/queue-status queue))}}
     ["queue" action]
     {:post #(ok (as-> (keyword action) action
-                      (px/queue-action action
-                                       (select-keys (% :params)
-                                                    (into [:queue]
-                                                          (condp = action
-                                                            :add [:agent :memberName :paused]
-                                                            :pause [:agent :paused]
-                                                            :remove [:agent]
-                                                            nil))))))})))
+                      (px/queue-action
+                       action
+                       (spy action (select-keys (% :params)
+                                                (into [:queue]
+                                                      (condp = action
+                                                        :add [:interface :memberName :paused]
+                                                        :pause [:interface :paused]
+                                                        :remove [:interface]
+                                                        nil)))))))})))
 
 (defn start []
   (let [cfg (read (java.io.PushbackReader. (io/reader "pbxis-config.clj")))

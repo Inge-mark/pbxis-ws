@@ -57,11 +57,11 @@ See the AsteriskJava documentation for the explanation of [queue](http://www.ast
 
 These are some of the available actions:
 
-- `add`: add the agent to the queue (log him on). Parameters: `queue`, `agent` (required); `memberName`, `paused` (optional);
+- `add`: add the agent to the queue (log him on). Parameters: `queue`, `interface` (required); `memberName`, `paused` (optional);
 
-- `remove`: remove the agent from the queue (log him off). Parameters: `queue`, `agent` (required);
+- `remove`: remove the agent from the queue (log him off). Parameters: `queue`, `interface` (required);
 
-- `pause`: set the *paused* status of a logged-on agent. Parameters: `queue`, `agent`, `paused` (required);
+- `pause`: set the *paused* status of a logged-on agent. Parameters: `queue`, `interface`, `paused` (required);
 
 - `reset`: reset queue statistics. Parameter: `queue` (optional).
 
@@ -69,7 +69,7 @@ Explanation of parameters:
 
 - `queue`: the queue against which the action is executed;
 
-- `agent`: the agent on whose behalf the action is executed;
+- `interface`: the interface (local phone number) of the agent on whose behalf the action is executed;
 
 - `memberName`: the name of the agent that will be used by Asterisk;
 
