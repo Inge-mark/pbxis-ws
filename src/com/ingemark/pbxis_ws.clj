@@ -151,18 +151,19 @@
     ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
     ["originate" src dest] {:post {:params [callerId]
                                    :response (ok (px/originate-call src dest callerId))}}
-    ["queue" "status"] {:get {:params [queue] :response (ok (px/queue-status queue))}}
-    ["queue" action]
-    {:post #(ok (as-> (keyword action) action
-                      (px/queue-action
-                       action
-                       (spy action (select-keys (% :params)
-                                                (into [:queue]
-                                                      (condp = action
-                                                        :add [:interface :memberName :paused]
-                                                        :pause [:interface :paused]
-                                                        :remove [:interface]
-                                                        nil)))))))})))
+    ["queue" &]
+    {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
+     :post [[action]
+            #(ok (as-> (keyword action) action
+                       (px/queue-action
+                        action
+                        (select-keys (% :params)
+                                     (into [:queue]
+                                           (condp = action
+                                             :add [:interface :memberName :paused]
+                                             :pause [:interface :paused]
+                                             :remove [:interface]
+                                             nil))))))]})))
 
 (defn start []
   (let [cfg (read (java.io.PushbackReader. (io/reader "pbxis-config.clj")))
