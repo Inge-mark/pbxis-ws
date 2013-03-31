@@ -161,6 +161,8 @@ Another use case is a supervisor application that monitors the activities of all
   - adapted HTML client to API change in 0.2.6
   - added PNG for queue status = `invalid`
 
+0.2.8
+  - adapted /queue/* route resolution to new Moustache semantics ("no fallthrough")
 
 ## License
 
