@@ -24,10 +24,11 @@ function queue_action(action) {
     var queue = $('#queue').val();
     $.ajax({
         type: 'POST',
-        url: '/queue/'+action+'/'+agent,
+        url: '/queue/'+action,
         data: JSON.stringify(
-            {queue: queue,
-             paused: $('#'+agent+'_'+queue+'_agent_status').attr('src').indexOf('paused') === -1}),
+            {'interface': agent,
+             'queue': queue,
+             'paused': $('#'+agent+'_'+queue+'_agent_status').attr('src').indexOf('paused') === -1}),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     });
