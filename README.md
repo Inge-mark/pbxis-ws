@@ -154,6 +154,9 @@ Another use case is a supervisor application that monitors the activities of all
 0.2.5
  - changed /queue-status to /queue/status
 
+0.2.6
+  - fixed /queue/* actions: renamed param `agent` -> `interface`
+
 ## License
 
 Copyright © 2013 Inge-mark d.o.o.
