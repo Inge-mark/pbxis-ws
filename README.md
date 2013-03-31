@@ -157,6 +157,11 @@ Another use case is a supervisor application that monitors the activities of all
 0.2.6
   - fixed /queue/* actions: renamed param `agent` -> `interface`
 
+0.2.7
+  - adapted HTML client to API change in 0.2.6
+  - added PNG for queue status = `invalid`
+
+
 ## License
 
 Copyright © 2013 Inge-mark d.o.o.
