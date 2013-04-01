@@ -164,6 +164,9 @@ Another use case is a supervisor application that monitors the activities of all
 0.2.8
   - adapted /queue/* route resolution to new Moustache semantics ("no fallthrough")
 
+0.2.9
+  - coerce string-typed query params to appropriate type in queue actions
+
 ## License
 
 Copyright © 2013 Inge-mark d.o.o.
