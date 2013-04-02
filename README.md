@@ -167,6 +167,9 @@ Another use case is a supervisor application that monitors the activities of all
 0.2.9
   - coerce string-typed query params to appropriate type in queue actions
 
+0.2.10
+  - upgrade pbxis to fix a dependency issue
+
 ## License
 
 Copyright © 2013 Inge-mark d.o.o.
