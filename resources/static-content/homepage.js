@@ -26,7 +26,7 @@ function queue_action(action) {
         type: 'POST',
         url: '/queue/'+action,
         data: JSON.stringify(
-            {'interface': agent,
+            {'agent': agent,
              'queue': queue,
              'paused': $('#'+agent+'_'+queue+'_agent_status').attr('src').indexOf('paused') === -1}),
         contentType: 'application/json; charset=utf-8',

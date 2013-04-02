@@ -160,9 +160,9 @@
                         (select-keys (% :params)
                                      (into [:queue]
                                            (condp = action
-                                             :add [:interface :memberName :paused]
-                                             :pause [:interface :paused]
-                                             :remove [:interface]
+                                             :add [:agent :memberName :paused]
+                                             :pause [:agent :paused]
+                                             :remove [:agent]
                                              nil))))))]})))
 
 (defn start []
