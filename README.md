@@ -173,6 +173,10 @@ Another use case is a supervisor application that monitors the activities of all
 0.2.11
   - undo the mistake of 0.2.6: rename `agent` back to `interface` and fix the real issue in the pbxis library code
 
+0.2.12
+  - upgrade pbxis lib: add :agent key to queue-status
+
+
 ## License
 
 Copyright © 2013 Inge-mark d.o.o.
