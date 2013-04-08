@@ -9,7 +9,7 @@
             "publish-checkout" ["thrush" "bundle," "upload" "bundle"]
             "publish-latest" ["with-checkout" ":latest" "publish-checkout"]
             "release" ["do" "git-check-clean,"
-                       "thrush" "version-update" ":release" "edit-version,"
+                       "thrush" "version-update" ":release," "edit-version,"
                        "do" "deploy" "clojars," "commit" "New release," "tag,"
                        "thrush" "version-update" ":new-snapshot," "edit-version,"
                        "do" "commit" "New snapshot," "push"]}
