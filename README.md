@@ -147,34 +147,37 @@ Another use case is a supervisor application that monitors the activities of all
 
 ## Release notes
 
-0.2.4
- - changed /queue/<action> API: agent is now a query param
- - added /queue-status to fetch queue status
+0.2.13
+  - upgrade pbxis lib: fix :agent key in agentComplete
 
-0.2.5
- - changed /queue-status to /queue/status
-
-0.2.6
-  - fixed /queue/* actions: renamed param `agent` -> `interface`
-
-0.2.7
-  - adapted HTML client to API change in 0.2.6
-  - added PNG for queue status = `invalid`
-
-0.2.8
-  - adapted /queue/* route resolution to new Moustache semantics ("no fallthrough")
-
-0.2.9
-  - coerce string-typed query params to appropriate type in queue actions
-
-0.2.10
-  - upgrade pbxis to fix a dependency issue
+0.2.12
+  - upgrade pbxis lib: add :agent key to queue-status
 
 0.2.11
   - undo the mistake of 0.2.6: rename `agent` back to `interface` and fix the real issue in the pbxis library code
 
-0.2.12
-  - upgrade pbxis lib: add :agent key to queue-status
+0.2.10
+  - upgrade pbxis to fix a dependency issue
+
+0.2.9
+  - coerce string-typed query params to appropriate type in queue actions
+
+0.2.8
+  - adapted /queue/* route resolution to new Moustache semantics ("no fallthrough")
+
+0.2.7
+  - adapted HTML client to API change in 0.2.6
+
+0.2.6
+  - fixed /queue/* actions: renamed param `agent` -> `interface`
+
+0.2.5
+ - changed /queue-status to /queue/status
+
+0.2.4
+ - changed /queue/<action> API: agent is now a query param
+ - added /queue-status to fetch queue status
+  - added PNG for queue status = `invalid`
 
 
 ## License
