@@ -7,8 +7,14 @@
   :deploy-repositories [["bundle" "forge://pbxis-ws"]]
   :aliases {"bundle" "bundle-pbxis-ws"
             "publish-checkout" ["thrush" "bundle," "upload" "bundle"]
-            "publish-latest" ["with-checkout" ":latest" "publish-checkout"]}
-  :plugins [[lein-thrush "0.1.1"]
+            "publish-latest" ["with-checkout" ":latest" "publish-checkout"]
+            "release" ["do" "git-check-clean,"
+                       "thrush" "version-update" ":release" "edit-version,"
+                       "do" "deploy" "clojars," "commit" "New release," "tag,"
+                       "thrush" "version-update" ":new-snapshot," "edit-version,"
+                       "do" "commit" "New snapshot," "push"]}
+  :plugins [[lein-nix "0.1.0-SNAPSHOT"]]
+  #_[[lein-thrush "0.1.1"]
             [com.ingemark/lein-release "2.1.1"]
             [com.ingemark/lein-with-checkout "0.1.0"]
             [com.ingemark/lein-bundle-pbxis-ws "0.1.5"]
