@@ -14,11 +14,6 @@
                        "thrush" "version-update" ":new-snapshot," "edit-version,"
                        "xdo" "commit" "New snapshot," "push"]}
   :plugins [[lein-nix "0.1.0-SNAPSHOT"]]
-  #_[[lein-thrush "0.1.1"]
-            [com.ingemark/lein-release "2.1.1"]
-            [com.ingemark/lein-with-checkout "0.1.0"]
-            [com.ingemark/lein-bundle-pbxis-ws "0.1.5"]
-            [com.ingemark/lein-upload "0.1.3"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
