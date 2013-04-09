@@ -8,11 +8,11 @@
   :aliases {"bundle" "bundle-pbxis-ws"
             "publish-checkout" ["thrush" "bundle," "upload" "bundle"]
             "publish-latest" ["with-checkout" ":latest" "publish-checkout"]
-            "release" ["do" "git-check-clean,"
+            "release" ["xdo" "git-check-clean,"
                        "thrush" "version-update" ":release," "edit-version,"
-                       "do" "deploy" "clojars," "commit" "New release," "tag,"
+                       "xdo" "deploy" "clojars," "commit" "New release," "tag,"
                        "thrush" "version-update" ":new-snapshot," "edit-version,"
-                       "do" "commit" "New snapshot," "push"]}
+                       "xdo" "commit" "New snapshot," "push"]}
   :plugins [[lein-nix "0.1.0-SNAPSHOT"]]
   #_[[lein-thrush "0.1.1"]
             [com.ingemark/lein-release "2.1.1"]
