@@ -5,8 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :lein-release {:deploy-via :none}
   :deploy-repositories [["bundle" "forge://pbxis-ws"]]
-  :lein-bundle ["README.md" "logback.xml"
-                ["pbxis-config.clj.template" "pbxis-config.clj"]]
+  :lein-bundle {:filespec ["README.md" "logback.xml"
+                           ["pbxis-config.clj.template" "pbxis-config.clj"]]}
   :aliases {"release"
             ["xdo" "git-check-clean,"
              "thrush" "version-update" ":release," "edit-version,"
@@ -15,7 +15,7 @@
              "xdo" "commit" "New snapshot," "push"]
             "publish-latest"
             ["with-checkout" ":latest"
-             "thrush" "uberjar," "bundle" ".," "upload" "bundle"]}
+             "thrush" "pom," "bundle" ".," "upload" "bundle"]}
   :plugins [[lein-nix "0.1.1-SNAPSHOT"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
