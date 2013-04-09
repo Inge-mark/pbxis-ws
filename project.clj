@@ -15,7 +15,7 @@
              "xdo" "commit" "New snapshot," "push"]
             "publish-latest"
             ["with-checkout" ":latest"
-             "thrush" "pom," "bundle" ".," "upload" "bundle"]}
+             "thrush" "jar," "bundle" ".," "upload" "bundle"]}
   :plugins [[lein-nix "0.1.1-SNAPSHOT"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
