@@ -6,14 +6,18 @@
   :deploy-repositories [["bundle" "forge://pbxis-ws"]]
   :lein-bundle {:filespec ["README.md" "logback.xml"
                            ["pbxis-config.clj.template" "pbxis-config.clj"]]}
-  :aliases {"to-release-version" ["thrush" "version-update" ":release," "edit-version"]
-            "to-snapshot" ["thrush" "version-update" ":new-snapshot," "edit-version"]
-            "release" ["xdo" "git-check-clean," "to-release-version,"
-                       "deploy" "clojars," "commit" "New release," "tag,"
-                       "to-snapshot," "commit" "New snapshot," "push"]
-            "upload-bundle" ["thrush" "uberjar," "bundle" ".," "upload" "bundle"]
-            "publish-latest" ["with-checkout" ":latest" "upload-bundle"]}
-  :plugins [[lein-nix "0.1.6"]]
+  :aliases {"release" ["xdo"
+                       "git-check-clean"
+                       ["thrush" ["version-update" ":release"] "edit-version"]
+                       ["deploy" "clojars"]
+                       ["commit" "New release"]
+                       "tag"
+                       ["thrush" ["version-update" ":new-snapshot"] "edit-version"]
+                       ["commit" "New snapshot"]
+                       "push"]
+            "publish-latest" ["with-checkout" ":latest"
+                              ["thrush" "uberjar" ["bundle" "."] ["upload" "bundle"]]]}
+  :plugins [[lein-nix "0.1.9"]]
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
