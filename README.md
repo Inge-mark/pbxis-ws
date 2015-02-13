@@ -85,6 +85,14 @@ Place a call to the `dest` phone number, patching it through to `src`, a local e
 
 **JSON response:** action ID, a simple string. This ID may occur in a later `originateFailed` event. If originating succeeds, it won't be needed.
 
+### Transfer a call
+
+`POST /redirect-to/<dest>`
+
+**Parameter:** `agent-or-channel`
+
+Redirect (transfer) a call to another extension. `agent-or-channel` is either the raw name of the channel which to redirect to the new destination, or an agent's extension number. In the latter case a channel belonging to the agent will be looked up and its bridged channel will be the one that gets redirected. If there are several channels belonging to the agent, the response will look like `{"candidateChannels": [{"channel":x,"callerId":y}, ...]}`, listing all the agent's bridged channels and the associated caller IDs of their remote parties. This can then be used to issue this request again with the chosen channel name.
+
 ### Acquire a ticket
 
 `POST /ticket`
