@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: aleph:aleph:0.3.0-beta15">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/aleph/aleph/0.3.0-beta15/aleph-0.3.0-beta15.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/aleph/aleph/0.3.0-beta15/aleph-0.3.0-beta15-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/aleph/aleph/0.3.0-beta15/aleph-0.3.0-beta15-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
