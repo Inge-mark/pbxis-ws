@@ -155,6 +155,9 @@ Another use case is a supervisor application that monitors the activities of all
 
 ## Release notes
 
+0.3.0
+  - add routes /redirect-to and /park-and-announce
+
 0.2.13
   - upgrade pbxis lib: fix :agent key in agentComplete
 
