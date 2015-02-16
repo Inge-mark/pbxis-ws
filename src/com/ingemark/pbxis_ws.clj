@@ -153,6 +153,8 @@
                                      :response (ok (px/originate-call src dest callerId))}}
       ["redirect-to" dest] {:post {:params [agent-or-channel]
                                    :response (ok (px/redirect-call agent-or-channel dest))}}
+      ["park-and-announce"] {:post {:params [agent-or-channel]
+                                    :response (ok (px/park-and-announce agent-or-channel))}}
       ["queue" &]
       {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
        :post [[action]
