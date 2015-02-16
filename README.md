@@ -93,6 +93,14 @@ Place a call to the `dest` phone number, patching it through to `src`, a local e
 
 Redirect (transfer) a call to another extension, denoted by `dest`. `agent-or-channel` is either the raw name of the channel which to redirect to the new destination, or an agent's extension number. In the latter case a channel belonging to the agent will be looked up and its bridged channel will be the one that gets redirected. If there are several channels belonging to the agent, the response will look like `{"candidates": [{"agentChannel":x,"bridgedChannel":y,"callerId":z}, ...]}`, listing all the agent's channels, their bridged channels, and the associated caller IDs of the remote parties. This can then be used to issue this request again with the chosen channel name.
 
+### Park a call
+
+`POST /park-and-announce`
+
+**Parameter:** `agent-or-channel`
+
+Parks a call so it can be retrieved by calling another extension number. The number is announced in voice on the channel that was bridged to the parked channel. If the call is not retrieved within a timeout, it is returned to the owner of the bridged channel. The semantics of the `agent-or-channel` parameter are identical to the `/redirect-to` call above. This includes the response described there in the case of several candidate channels.
+
 ### Acquire a ticket
 
 `POST /ticket`
