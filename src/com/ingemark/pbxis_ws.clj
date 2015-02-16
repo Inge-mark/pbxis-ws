@@ -139,31 +139,32 @@
 
 (def app-main
   (ah/wrap-ring-handler
-   (app
-    :middlewares [wrap-params wrap-json-params wrap-keyword-params
-                  wrap-file-info (wrap-resource "static-content")
-                  wrap-log-request wrap-mockable]
-    ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
-    ["stop"] {:post {:response (ok (stop))}}
-    [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
-    [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
-    [ticket "sse"] {:get {:response (ok (sse-channel ticket))}}
-    ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
-    ["originate" src dest] {:post {:params [callerId]
-                                   :response (ok (px/originate-call src dest callerId))}}
-    ["queue" &]
-    {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
-     :post [[action]
-            #(ok (as-> (keyword action) action
-                       (px/queue-action
-                        action
-                        (select-keys (% :params)
-                                     (into [:queue]
-                                           (condp = action
-                                             :add [:agent :memberName :paused]
-                                             :pause [:agent :paused]
-                                             :remove [:agent]
-                                             nil))))))]})))
+    (app
+      :middlewares [wrap-params wrap-json-params wrap-keyword-params
+                    wrap-file-info (wrap-resource "static-content")
+                    wrap-log-request wrap-mockable]
+      ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
+      ["stop"] {:post {:response (ok (stop))}}
+      [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
+      [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
+      [ticket "sse"] {:get {:response (ok (sse-channel ticket))}}
+      ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
+      ["originate" src dest] {:post {:params [callerId]
+                                     :response (ok (px/originate-call src dest callerId))}}
+      ["redirect-to" dest] {:post {:params [agent-or-channel]
+                                   :response (ok (px/redirect-call agent-or-channel dest))}}
+      ["queue" &]
+      {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
+       :post [[action]
+              #(ok (as-> (keyword action) action
+                     (px/queue-action action
+                       (select-keys (% :params)
+                         (into [:queue]
+                           (condp = action
+                             :add [:agent :memberName :paused]
+                             :pause [:agent :paused]
+                             :remove [:agent]
+                             nil))))))]})))
 
 (defn start []
   (let [cfg (read (java.io.PushbackReader. (io/reader "pbxis-config.clj")))

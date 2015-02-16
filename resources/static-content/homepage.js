@@ -52,4 +52,12 @@ $(function() {
             dataType: 'json'
         });
     });
+    $('#redirect').submit(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/redirect-to/'+$('#redir-dest').val()+'?agent-or-channel='+$('#agent-or-channel').val(),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
+        });
+    });
 })

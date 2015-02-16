@@ -45,6 +45,10 @@
       [:label {:for "src"}] [:input {:id "src"}]
       [:label {:for "dest"} "--->"] [:input {:id "dest"}]
       [:input {:type "submit" :value "Call!"}]]
+     [:form {:id "redirect" :onsubmit "return false;"}
+      [:label {:for "agent-or-channel"}] [:input {:id "agent-or-channel"}]
+      [:label {:for "redir-dest"} "--->"] [:input {:id "redir-dest"}]
+      [:input {:type "submit" :value "Transfer!"}]]
      [:form {:id "queueaction" :onsubmit "return false;"}
       [:label {:for "agent"}] [:input {:id "agent"}]
       [:label {:for "queue"} "/"] [:input {:id "queue"}]
