@@ -144,7 +144,7 @@ See [pbxis-sse.js](https://github.com/Inge-mark/pbxis-ws/blob/master/static-cont
 
 ## Example usage scenario
 
-The PBXIS web service can be used to implemented a scenario like the following:
+The PBXIS web service can be used to implement a scenario like the following:
 
 * there is a web application that agents use at their workstation;
 * the web application subscribes an agent to the PBXIS web service and passes the event-stream URL to the agent's browser;
