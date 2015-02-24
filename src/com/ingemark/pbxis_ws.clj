@@ -149,8 +149,9 @@
       [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
       [ticket "sse"] {:get {:response (ok (sse-channel ticket))}}
       ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
-      ["originate" src dest] {:post {:params [callerId]
-                                     :response (ok (px/originate-call src dest callerId))}}
+      ["originate" src dest] {:post {:params [callerId variables]
+                                     :response (ok (px/originate-call src dest
+                                                     :caller-id callerId :variables variables))}}
       ["redirect-to" dest] {:post {:params [agent-or-channel]
                                    :response (ok (px/redirect-call agent-or-channel dest))}}
       ["park-and-announce"] {:post {:params [agent-or-channel]
