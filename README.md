@@ -163,6 +163,12 @@ Another use case is a supervisor application that monitors the activities of all
 
 ## Release notes
 
+1.0.0
+  - support supplying the "variables" parameter to Originate action
+
+0.3.1
+  - support the configuration of context for Originate and Redirect actions
+
 0.3.0
   - add routes /redirect-to and /park-and-announce
 
