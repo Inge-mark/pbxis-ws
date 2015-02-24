@@ -38,7 +38,7 @@
   (fn [req]
     (if-let [body (and (json-request? req) (:body req))]
       (let [bstr (slurp body)
-            json-params (json/read-str bstr)] #_[:key-fn keyword]
+            json-params (json/read-str bstr)]
         (handle (assoc req :json-params json-params, :params (merge (:params req) json-params))))
       (handle req))))
 
