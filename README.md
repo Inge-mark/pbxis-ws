@@ -79,9 +79,9 @@ Explanation of parameters:
 
 `POST /originate/<src>/<dest>`
 
-**Parameter:** `callerId`
+**Parameters:** `callerId`, `variables`
 
-Place a call to the `dest` phone number, patching it through to `src`, a local extension number. Optionally use the provided `callerId` to present the call to the remote party.
+Place a call to the `dest` phone number, patching it through to `src`, a local extension number. Optionally use the provided `callerId` to present the call to the remote party. If the `variables` parameter is provided, its value must be a JSON object with string-typed keys and values. The object will be used as the value of the `variables` property on the underlying Originate action.
 
 **JSON response:** action ID, a simple string. This ID may occur in a later `originateFailed` event. If originating succeeds, it won't be needed.
 
