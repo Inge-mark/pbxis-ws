@@ -4,3 +4,4 @@ checkouts
 target
 pom.xml*
 .lein-repl-history
+.idea/workspace.xml
