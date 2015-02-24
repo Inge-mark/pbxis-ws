@@ -18,7 +18,7 @@
             "publish-latest" ["with-checkout" ":latest"
                               "thrush" "uberjar," "bundle" ".," "upload" "bundle"]}
   :plugins [[lein-nix "0.1.9"]]
-  :dependencies [[com.ingemark/pbxis "0.6.0"]
+  :dependencies [[com.ingemark/pbxis "0.6.2"]
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
