@@ -1,4 +1,4 @@
-(defproject com.ingemark/pbxis-ws "1.0.3"
+(defproject com.ingemark/pbxis-ws "1.0.4-SNAPSHOT"
   :description "Asterisk Call Center Web Service"
   :url "http://www.inge-mark.hr"
   :license {:name "Eclipse Public License"
@@ -9,7 +9,7 @@
   :aliases {"release" ["xdo"
                        "git-check-clean"
                        ["thrush" ["version-update" ":release"] "edit-version"]
-                       ["deploy" "clojars"]
+                      ;["deploy" "clojars"]
                        ["commit" "New release"]
                        "tag"
                        ["thrush" ["version-update" ":new-snapshot"] "edit-version"]
@@ -18,7 +18,7 @@
             "publish-latest" ["with-checkout" ":latest"
                               "thrush" "uberjar," "bundle" ".," "upload" "bundle"]}
   :plugins [[lein-nix "0.1.9"]]
-  :dependencies [[com.ingemark/pbxis "1.0.3"]
+  :dependencies [[com.ingemark/pbxis "1.0.4"]
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
