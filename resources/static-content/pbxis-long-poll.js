@@ -1,5 +1,6 @@
 function handle_events(events) {
     var result = true;
+    console.log("HERE!")
     $.each(events, function(_, e) { result &= handle_event(e); });
     return result;
 }

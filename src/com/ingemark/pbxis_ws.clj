@@ -154,6 +154,8 @@
                                                      :caller-id callerId :variables variables))}}
       ["redirect-to" dest] {:post {:params [agent-or-channel]
                                    :response (ok (px/redirect-call agent-or-channel dest))}}
+      ["bridged-channels"] {:get {:params [extension]
+                                  :response (ok (px/find-channels extension))}}
       ["park-and-announce"] {:post {:params [agent-or-channel]
                                     :response (ok (px/park-and-announce agent-or-channel))}}
       ["queue" &]

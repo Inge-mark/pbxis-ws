@@ -1,5 +1,5 @@
 function pbx_connection(is_connected) {}
-function pbx_agent_status(queue, status) {}
+function pbx_agent_status(agent, queue, status) {}
 function pbx_agent_name(agent, name) {}
 function pbx_extension_status(status) {}
 function pbx_queue_count(queue, count) {}
