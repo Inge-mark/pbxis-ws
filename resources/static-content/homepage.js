@@ -75,7 +75,8 @@ function drawCharts(elements, title) {
                 value: 0,
                 min: 0,
                 max: 100,
-                title: title
+                title: title,
+                relativeGaugeSize: true
             })}
     return r;
 }
