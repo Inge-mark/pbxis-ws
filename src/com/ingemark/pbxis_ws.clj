@@ -13,6 +13,7 @@
   (require (com.ingemark [pbxis :as px] [logging :refer :all])
            [com.ingemark.pbxis.util :as pu :refer (>?>)]
            [com.ingemark.pbxis-ws.homepage :refer :all]
+           [com.ingemark.pbxis-ws.wallboard :refer :all]
            [clojure.java.io :as io] [clojure.string :as s] [clojure.data.json :as json]
            [clojure.core.incubator :refer (-?> dissoc-in)]
            [net.cgrand.moustache :refer (app)]
@@ -27,7 +28,19 @@
 
 (defonce poll-timeout (atom [30 TimeUnit/SECONDS]))
 (defonce unsub-delay (atom [15 TimeUnit/SECONDS]))
+
 (def EVENT-BURST-MILLIS 100)
+
+(defn ->timer [] (java.util.Timer.))
+
+(defn fixed-rate
+  ([f per] (fixed-rate f (->timer) 0 per))
+  ([f timer per] (fixed-rate f timer 0 per))
+  ([f timer dlay per]
+   (let [tt (proxy [java.util.TimerTask] [] (run [] (f)))]
+     (.scheduleAtFixedRate timer tt dlay per)
+     #(.cancel tt))))
+
 
 (defn- json-request?
   [req]
@@ -144,6 +157,7 @@
                     wrap-file-info (wrap-resource "static-content")
                     wrap-log-request wrap-mockable]
       ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
+      ["wallboard" type [qs split]] {:get {:response (wallboard type qs)}}
       ["stop"] {:post {:response (ok (stop))}}
       [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
       [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
@@ -158,8 +172,7 @@
                                   :response (ok (px/find-channels extension))}}
       ["park-and-announce"] {:post {:params [agent-or-channel]
                                     :response (ok (px/park-and-announce agent-or-channel))}}
-      ["queue" &]
-      {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
+      ["queue" &] {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
        :post [[action]
               #(ok (as-> (keyword action) action
                      (px/queue-action action
@@ -177,6 +190,11 @@
         cfg (dissoc (spy "Configuration" cfg) :port :ami)]
     (swap! poll-timeout #(if-let [t (cfg :poll-timeout-seconds)] [t TimeUnit/SECONDS] %))
     (swap! unsub-delay #(if-let [d (cfg :unsub-delay-seconds)] [d TimeUnit/SECONDS] %))
+    (when-let [d (* 1000 (cfg :summary-refresh-seconds))]
+      (fixed-rate #(try (px/publish-q-summary-status)
+                           (catch Throwable e
+                             (logerror "Summary not sent cause is: " e)))
+                  (->timer) 10000 d))
     (let [stop-ami (px/ami-connect host username password cfg)
           stop-http (ah/start-http-server (var app-main)
                                           {:port port :websocket true})]
