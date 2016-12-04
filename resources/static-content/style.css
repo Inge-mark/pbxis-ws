@@ -1,1 +1,81 @@
 .top-buffer { margin-top:20px; }
+
+.main-content{
+    color: white;
+    min-height: 28vw;
+    background: #1C053A;
+}
+
+.main-graph{
+    color: white;
+    min-height: 28vw;
+}
+
+.sidebar-graph {
+    min-height: 11vw;
+    margin-bottom: 2vw;
+}
+
+.sidebar-content {
+    min-height: 13vw;
+    margin-bottom: 2vw;
+    background: #b4bac0;
+}
+
+.sidebar-content.giveup {
+    background: #000000;
+}
+
+.sidebar-content.received {
+    background: #530E53;
+}
+
+.sidebar-content.logged {
+    background: #8F78AD;
+}
+
+.sidebar-content.available {
+    background: #6B4E90;
+}
+
+.sidebar-content.performance {
+    background: #9FA99F;
+}
+
+.sidebar-content.servicelevel {
+    background: #648064;
+}
+
+.sidebar-content.maxhlodtime {
+    background: #8A458A;
+}
+
+.sidebar-content.holdtime {
+    background: #8A458A;
+}
+
+
+.box-title {
+    color: white;
+    font-size: 15px;
+    font-size: 1.8vw;
+}
+
+
+.box-value {
+    color: white;
+    font-size: 140px;
+    font-size: 14.5vw;
+}
+
+.box-value-small {
+    color: white;
+    font-size: 45px;
+    font-size: 4.5vw;
+}
+
+.box-title-small {
+    color: white;
+    font-size: 12px;
+    font-size: 1.2vw;
+}

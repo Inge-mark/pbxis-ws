@@ -1,7 +1,7 @@
-String.prototype.repeat = function(cnt) {return new Array(cnt+1).join(this);}
+ String.prototype.repeat = function(cnt) {return new Array(cnt+1).join(this);}
 
 var ringing_phone = '<img src="/img/ringing.png"/>'
-
+var callsCharts, callsSLACharts
 var agentStaus = {
     inuse: "glyphicon glyphicon-earphone",
     paused: "glyphicon glyphicon-pause",
@@ -51,6 +51,36 @@ function queue_action(action) {
         dataType: 'json'
     });
 }
+
+
+function pbx_wallboard(e) {
+    if ($('#' + e.queue + '_callsChart').length > 0) {
+        for (i in e) {
+            $('#' + e['queue'] + '_' + i ).html(e[i]);
+        }
+        var summary = e.completed + e.abandoned;
+        var ratio = summary == 0 ? 100 : (e.completed / summary) * 100;
+        callsCharts[ e.queue + '_callsChart'].refresh(ratio);
+        callsSLACharts[e.queue + '_callsSLAChart'].refresh(e.serviceLevelPerf);
+
+    }
+}
+
+function drawCharts(elements, title) {
+    var r=[];
+    for(i=0; i<elements.length; i++) {
+        r[elements[i].id] =
+            new JustGage({
+                id: elements[i].id,
+                value: 0,
+                min: 0,
+                max: 100,
+                title: title
+            })}
+    return r;
+}
+
+
 $(function() {
     pbx_connection(false);
     $('#log-on').click(function() {
@@ -90,4 +120,7 @@ $(function() {
             dataType: 'json'
         });
     });
+
+    callsCharts = drawCharts($('[id*=_callsChart'), 'Success (%)');
+    callsSLACharts = drawCharts($('[id*=_callsSLAChart'),'SLA (%)');
 })
