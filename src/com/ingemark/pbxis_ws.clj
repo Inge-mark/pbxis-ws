@@ -14,6 +14,9 @@
            [com.ingemark.pbxis.util :as pu :refer (>?>)]
            [com.ingemark.pbxis-ws.homepage :refer :all]
            [com.ingemark.pbxis-ws.wallboard :refer :all]
+           [com.ingemark.pbxis-ws.loginpage :refer :all]
+           [com.ingemark.pbxis-ws.agentpage :refer :all]
+           [clojure.core.strint :refer (<<)]
            [clojure.java.io :as io] [clojure.string :as s] [clojure.data.json :as json]
            [clojure.core.incubator :refer (-?> dissoc-in)]
            [net.cgrand.moustache :refer (app)]
@@ -23,11 +26,16 @@
            (ring.middleware [params :refer (wrap-params)]
                             [keyword-params :refer (wrap-keyword-params)]
                             [resource :refer (wrap-resource)]
-                            [file-info :refer (wrap-file-info)]))
+                            [file-info :refer (wrap-file-info)]
+                            [cookies :refer (wrap-cookies)]))
   (import java.util.concurrent.TimeUnit))
 
 (defonce poll-timeout (atom [30 TimeUnit/SECONDS]))
 (defonce unsub-delay (atom [15 TimeUnit/SECONDS]))
+(defonce agents (atom {}))
+(defonce sessions (atom {}))
+(defonce agents-queues (atom {}))
+(defonce config (atom {}))
 
 (def EVENT-BURST-MILLIS 100)
 
@@ -94,8 +102,30 @@
            #(do (when % (logdebug "Cancel invalidator" tkt) (pu/cancel-schedule %))
                 newsched))))
 
-(defn- ticket-for [agnts qs]
-  (let [tkt (ticket), eventch (px/event-channel agnts qs)]
+(defn- logged? [handler]
+  (fn [request]
+    (let [token (-> request :params :token)]
+      (if (get @sessions token)
+        (handler request)
+        (r/redirect "login")))))
+
+(defn- login [user passwd local localpass]
+  (let [found (= passwd (get @agents user))]
+    (if found
+      (do
+        (logdebug (<< "User ~{user} logged in"))
+        (let [token (ticket)]
+          (swap! sessions assoc token
+                 {:user user
+                  :local local
+                  :localpass localpass})
+          (r/redirect (<< "agentpage?token=~{token}"))))
+      (do
+        (logdebug "Invalid user name or password")
+        (r/redirect "login?loginerror=true")))))
+
+(defn- ticket-for [agnts qs summaryEvents]
+  (let [tkt (ticket), eventch (px/event-channel agnts qs summaryEvents)]
     (swap! ticket->eventch assoc-in [tkt :eventch] eventch)
     (m/on-closed eventch #(swap! ticket->eventch dissoc tkt))
     (set-ticket-invalidator-schedule tkt true)
@@ -156,13 +186,34 @@
       :middlewares [wrap-params wrap-json-params wrap-keyword-params
                     wrap-file-info (wrap-resource "static-content")
                     wrap-log-request wrap-mockable]
+      ["login"] {:get {:params [loginerror]
+                       :response (loginpage loginerror)}
+                 :post {:params [user pass local localpass]
+                        :response (login user pass local localpass)}}
+      ["agentpage"] {:middlewares [logged?]
+                     :get         {:params   [token]
+                                   :response (let [m (get @sessions token)
+                                                   agnt (:local m)
+                                                   user (:user m)
+                                                   localpass (:localpass m)
+                                                   qs (reduce (fn [v k]
+                                                                (if (some #(= % user)
+                                                                          (get @agents-queues k))
+                                                                  (concat v [k])
+                                                                  v))
+                                                              []
+                                                              (keys @agents-queues))
+                                                   agentUri (<< "sip:~{agnt}@~{(-> @config :ami :host)}")
+                                                   wsServer (get @config :wsServer)]
+                                               (agentpage agnt user localpass qs agentUri wsServer))}}
       ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
-      ["wallboard" type [qs split]] {:get {:response (wallboard type qs)}}
+      ["wallboard" type [qs split]] {:get {:params [summaryEvents]
+                                           :response (wallboard type qs {:summaryEvents summaryEvents})}}
       ["stop"] {:post {:response (ok (stop))}}
       [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
       [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
       [ticket "sse"] {:get {:response (ok (sse-channel ticket))}}
-      ["ticket"] {:post {:params [agents queues] :response (ok (ticket-for agents queues))}}
+      ["ticket"] {:post {:params [agents queues summaryEvents] :response (ok (ticket-for agents queues summaryEvents))}}
       ["originate" src dest] {:post {:params [callerId variables]
                                      :response (ok (px/originate-call src dest
                                                      :caller-id callerId :variables variables))}}
@@ -186,15 +237,19 @@
 
 (defn start []
   (let [cfg (read (java.io.PushbackReader. (io/reader "pbxis-config.clj")))
+        _ (swap! agents conj (read (java.io.PushbackReader. (io/reader "agents.clj"))))
+        _ (swap! agents-queues conj (read (java.io.PushbackReader. (io/reader "agents-queues.clj"))))
+        _ (swap! config conj cfg)
         {{:keys [host username password]} :ami, :keys [port]} cfg
         cfg (dissoc (spy "Configuration" cfg) :port :ami)]
     (swap! poll-timeout #(if-let [t (cfg :poll-timeout-seconds)] [t TimeUnit/SECONDS] %))
     (swap! unsub-delay #(if-let [d (cfg :unsub-delay-seconds)] [d TimeUnit/SECONDS] %))
     (when-let [d (* 1000 (cfg :summary-refresh-seconds))]
-      (fixed-rate #(try (px/publish-q-summary-status)
-                           (catch Throwable e
-                             (logerror "Summary not sent cause is: " e)))
-                  (->timer) 10000 d))
+      (when (> d 0)
+        (fixed-rate #(try (px/publish-q-summary-status)
+                          (catch Throwable e
+                            (logerror "Summary not sent cause is: " e)))
+                    (->timer) 10000 d)))
     (let [stop-ami (px/ami-connect host username password cfg)
           stop-http (ah/start-http-server (var app-main)
                                           {:port port :websocket true})]

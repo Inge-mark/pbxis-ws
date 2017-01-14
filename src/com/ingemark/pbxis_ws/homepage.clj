@@ -1,7 +1,9 @@
 (ns com.ingemark.pbxis-ws.homepage
-  (require [clojure.string :as s] [ring.util.response :as r]
+  (require [clojure.string :as s]
+           [ring.util.response :as r]
            [clojure.core.strint :refer (<<)]
-           [hiccup [core :as h] [element :as e] [page :as p]]))
+           [hiccup [core :as h] [element :as e] [page :as p]]
+           [com.ingemark.pbxis-ws.utils :as u]))
 
 (defn- texts [agnts qs]
   (s/join "," (concat (for [ag agnts, q qs] (<< "'~{ag}_~{q}_agent_status'"))
@@ -16,19 +18,11 @@
   (->
    (p/html5
     {:xml? true}
-    [:head
-     [:title "PBXIS"]
-     [:meta {:http-equiv "Content-Type" :content "text/html; charset=UTF-8"}]
-     [:meta {:http-equiv "X-UA-Compatible" :content "IE=edge"}]
-     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-     [:link {:href "/bootstrap/css/bootstrap.min.css" :rel "stylesheet"}]
-     [:link {:href "/style.css" :rel "stylesheet"}]
-     [:script {:src "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" :type "text/javascript"}]
-     [:script {:src "/bootstrap/js/bootstrap.min.js" :type "text/javascript"}]]
+    (u/common-head)
     (p/include-js
       "/pbxis-client.js" (<< "/pbxis-~{type}.js") "/homepage.js")
     (e/javascript-tag (<< "
-      function pbx_connection(is_connected) {
+      function pbxConnection(is_connected) {
         $('#connection').html(is_connected? 'Connected' : 'Disconnected');
         if (!is_connected) {
           $.each([~(texts agnts qs)], function(_,id) {
@@ -40,9 +34,10 @@
         }
       }
       $(function() {
-        pbx_start(
+        pbxStart(
           [~(s/join \",\" (for [ag agnts] (str \\' ag \\')))],
-          [~(s/join \",\" (for [q qs] (str \\' q \\')))]);
+          [~(s/join \",\" (for [q qs] (str \\' q \\')))],
+          false);
       });
 
       $(function () {
@@ -121,6 +116,6 @@
                 (for [q qs]
                   [:div {:class "row"}
                    [:div {:class "col-md-4 col-sm-4"} [:span q]]
-                   [:div {:class "col-md-4 col-sm-4"} [:span {:id (<< "~{ag}_~{q}_agent_status")}]]])]]])))]]])
+                   [:div {:class "col-md-4 col-sm-4"} [:span {:id (<< "~{ag}_~{q}_agent_status") :class "glyphicon"}]]])]]])))]]])
    r/response (r/content-type "text/html") (r/charset "UTF-8")))
 

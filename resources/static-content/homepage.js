@@ -1,44 +1,39 @@
- String.prototype.repeat = function(cnt) {return new Array(cnt+1).join(this);}
+
+String.prototype.repeat = function(cnt) {return new Array(cnt+1).join(this);}
 
 var ringing_phone = '<img src="/img/ringing.png"/>'
 var callsCharts, callsSLACharts
-var agentStaus = {
-    inuse: "glyphicon glyphicon-earphone",
-    paused: "glyphicon glyphicon-pause",
-    onhold: "glyphicon glyphicon-pause",
-    not_inuse: "glyphicon glyphicon-phone-alt",
-    ringing: "glyphicon glyphicon-bell",
-    loggedoff: "glyphicon glyphicon-log-out",
-    loggedon: "glyphicon glyphicon-log-in",
-    active: "glyphicon glyphicon-headphones"};
 
-function pbx_agent_status(agent, queue, status) {
-
+function pbxAgentStatus(agent, queue, status) {
     if (!status) status = 'loggedoff';
     var agentQueueId = agent + '_' + queue + '_agent_status';
-    $('#' + agentQueueId).replaceWith("<span id='" + agentQueueId +  "' class='pull-right " + agentStaus[status] + "'/>");
+    console.log("*************** Calling AgentStatus icon: " + agentQueueId + agentStaus[status])
+    replaceGlyphiconClass($('#' + agentQueueId), agentStaus[status]);
 }
-function pbx_extension_status(agent, status) {
+
+function pbxExtensionStatus(agent, status) {
     if (status == -1) status = 'not_inuse';
     var agntSpanId = agent + '_ext_status';
-    $('#' + agntSpanId).replaceWith("<span id='" + agntSpanId +  "' class='pull-right " + agentStaus[status] + "'/>");
+    console.log("*************** Calling change icon" + agntSpanId + agentStaus[status])
+    replaceGlyphiconClass($('#' + agntSpanId), agentStaus[status])
 }
-function pbx_agent_name(agent, name) {
+
+function pbxAgentName(agent, name) {
     $('#' + agent + '_name').html(name + ' (' + agent + ')')
 }
-function pbx_queue_count(queue, count) {
+function pbxQueueCount(queue, count) {
     $('#' + queue + '_queue_count').html(count)
 }
-function pbx_phone_num(agent, num, name) {
+function pbxPhoneNum(agent, num, name) {
     $('#' + agent + '_phone_num').html((num || '') + (name? '(' + name + ')' : ''));
 }
-function queue_action(action) {
+function queueAction(action) {
     var agent = $('#agent').val();
     var queue = $('#queue').val();
     var agentName = $('#agent-name').val();
     var localAction = action;
     if (action === "unpause")
-        localAction = "pause"
+        localAction = "pause";
     $.ajax({
         type: 'POST',
         url: '/queue/'+localAction,
@@ -53,16 +48,46 @@ function queue_action(action) {
 }
 
 
-function pbx_wallboard(e) {
+function pbxWallboard(e) {
     if ($('#' + e.queue + '_callsChart').length > 0) {
-        for (i in e) {
-            $('#' + e['queue'] + '_' + i ).html(e[i]);
+        if (e.type === 'QueueSummary') {
+            for (i in e) {
+                $('#' + e['queue'] + '_' + i).html(e[i]);
+            }
+            var summary = e.completed + e.abandoned;
+            var ratio = summary == 0 ? 100 : (e.completed / summary) * 100;
+            callsCharts[e.queue + '_callsChart'].refresh(ratio);
+            callsSLACharts[e.queue + '_callsSLAChart'].refresh(e.serviceLevelPerf);
         }
-        var summary = e.completed + e.abandoned;
-        var ratio = summary == 0 ? 100 : (e.completed / summary) * 100;
-        callsCharts[ e.queue + '_callsChart'].refresh(ratio);
-        callsSLACharts[e.queue + '_callsSLAChart'].refresh(e.serviceLevelPerf);
-
+        if (e.type === 'MemberSummary') {
+            var members = e.members;
+            members.sort(function (a, b) {
+                if (a.callsTaken > b.callsTaken)
+                    return -1;
+                else (e.callsTaken < b.callsTaken)
+                return 1;
+                return 0;
+            });
+            var tbody = $('#' + e['queue'] + '_agents');
+            var row = '<tr>';
+            var cols = ['memberName', 'location', 'callsTaken', 'paused']
+            for (i in members) {
+                for (x in cols) {
+                    if (x != 3) {
+                        row += "<td>" + members[i][cols[x]] + '</td>';
+                    } else {
+                        td_incall = ''
+                        ico = members[i][cols[x]] ? "glyphicon-pause" : "glyphicon-headphones";
+                        if (members[i]['incall'])
+                            td_incall="info";
+                        row += "<td class='" + td_incall +"'><span class='glyphicon " + ico + "'></span></td>";
+                        console.log(row);
+                    }
+                }
+                row += '</tr>'
+                tbody.html(row);
+            }
+        }
     }
 }
 
@@ -83,18 +108,18 @@ function drawCharts(elements, title) {
 
 
 $(function() {
-    pbx_connection(false);
+    pbxConnection(false);
     $('#log-on').click(function() {
-        queue_action('add');
+        queueAction('add');
     });
     $('#pause').click(function() {
-        queue_action('pause');
+        queueAction('pause');
     });
     $('#unpause').click(function() {
-        queue_action('unpause');
+        queueAction('unpause');
     });
     $('#log-off').click(function() {
-        queue_action('remove');
+        queueAction('remove');
     });
     $('#park-and-announce').submit(function() {
         $.ajax({

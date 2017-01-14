@@ -1,34 +1,37 @@
-function pbx_connection(is_connected) {}
-function pbx_agent_status(agent, queue, status) {}
-function pbx_agent_name(agent, name) {}
-function pbx_extension_status(status) {}
-function pbx_queue_count(queue, count) {}
-function pbx_phone_num(num) {}
-function pbx_wallboard(e){}
+function pbxConnection(is_connected) {}
+function pbxAgentStatus(agent, queue, status) {}
+function pbxAgentName(agent, name) {}
+function pbxExtensionStatus(status) {}
+function pbxQueueCount(queue, count) {}
+function pbxPhoneNum(num) {}
+function pbxWallboard(e){}
 
-function handle_event(e) {
+function handleEvent(e) {
     console.log("Handling event " + JSON.stringify(e));
     switch (e.type) {
         case "queueMemberStatus":
-            pbx_agent_status(e.agent, e.queue, e.status);
+            pbxAgentStatus(e.agent, e.queue, e.status);
             break;
         case "agentName":
-            pbx_agent_name(e.agent, e.name);
+            pbxAgentName(e.agent, e.name);
             break;
         case "extensionStatus":
-            pbx_extension_status(e.agent, e.status);
+            pbxExtensionStatus(e.agent, e.status);
             break;
         case "queueCount":
-            pbx_queue_count(e.queue, e.count);
+            pbxQueueCount(e.queue, e.count);
             break;
         case "phoneNumber":
-            pbx_phone_num(e.agent, e.number, e.name);
+            pbxPhoneNum(e.agent, e.number, e.name);
             break;
         case "QueueSummary":
-            pbx_wallboard(e);
+            pbxWallboard(e);
+            break;
+        case "MemberSummary":
+            pbxWallboard(e);
             break;
         case "closed":
-            pbx_connection(false);
+            pbxConnection(false);
             return false;
     }
     return true;

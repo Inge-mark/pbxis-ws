@@ -1,28 +1,28 @@
-function handle_events(events) {
+function handleEvents(events) {
     var result = true;
     console.log("HERE!")
-    $.each(events, function(_, e) { result &= handle_event(e); });
+    $.each(events, function(_, e) { result &= handleEvent(e); });
     return result;
 }
 
-function pbx_long_poll(ticket) {
+function pbxLongPoll(ticket) {
     $.getJSON("/" + ticket + "/long-poll", function(r) {
-        if (handle_events(r)) pbx_long_poll(ticket);
-        else pbx_connection(false);
-    }).error(function() {pbx_connection(false)});
+        if (handleEvents(r)) pbxLongPoll(ticket);
+        else pbxConnection(false);
+    }).error(function() {pbxConnection(false)});
 }
 
-function pbx_start(agents, queues) {
+function pbxStart(agents, queues, summaryEvents) {
     $.ajax(
         {
             type: "POST",
             url: "/ticket",
-            data: JSON.stringify({agents: agents, queues: queues}),
+            data: JSON.stringify({agents: agents, queues: queues, summaryEvents: summaryEvents}),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(ticket) {
-                pbx_connection(true);
-                pbx_long_poll(ticket);
+                pbxConnection(true);
+                pbxLongPoll(ticket);
             }
         }
     )
