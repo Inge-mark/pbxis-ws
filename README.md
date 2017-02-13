@@ -6,6 +6,11 @@ Exposes functions of the [PBXIS](https://github.com/inge-mark/pbxis) library as 
 
 will open a page that tracks agents 147, 149 (these are their extension numbers) and queues q1, q2, using WebSocket to receive the event stream.
 
+Also there are two additional example pages:
+ 
+ - `Wallboard` available at `wallboard/<tech>/<queues>`. This page is an example how to build wallboard application based on pbxis-ws.
+ - `Agen page` available at `agentpage`. Page will ask for user login and local number. After login user will be automatically sign in to queues configured in `agent-queues.clj`. 
+
 ##Download
 
 Fetch the tarball from [SourceForge](https://sourceforge.net/projects/pbxis-ws/files/).

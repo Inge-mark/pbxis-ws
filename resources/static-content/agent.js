@@ -1,4 +1,4 @@
-
+var gAgent, gQueues;
 
 function pbxAgentStatus(agent, queue, status) {
     if (!status) status = 'loggedoff';
@@ -10,50 +10,34 @@ function pbxQueueCount(queue, count) {
     $('#' + queue + '_queue_count').html(count)
 }
 
-var userAgent;
-var session;
-var options = {
-    media: {
-        constraints: {
-            audio: true,
-            video: false
-        },
-        render: {
-            remote: document.getElementById('remoteVideo'),
-            local: document.getElementById('localVideo')
-        }
-    }
-};
-
-$(function() {
-    $('#click-to-dial').click( function() {
-        var numberToDial = $('#number-to-dial').val();
-        alert('Dialing' + numberToDial);
-        session = userAgent.invite(numberToDial);
-        session.on('accepted', function(e) {
-
-        });
-    });
-});
-
-function initUserAgent(agentUri, wsServer, authorizationUser, pass){
-    userAgent = new SIP.UA({
-        traceSip: true,
-        uri: agentUri,
-        wsServers: [wsServer],
-        authorizationUser: authorizationUser,
-        password: pass
-        //stunServers: []
-    });
-
-    userAgent.on('invite', function (session) {
-        alert("Recieved Call");
-        session.accept(options);
-    });
-
-
-//    session = userAgent.invite('sip:193@192.168.18.40', options);
-
+function pbxPhoneNum(agent, number, name) {
+    if (number)
+        $('#caller-info').html("" + number + " - " + name);
+    else
+        $('#caller-info').html("free");
 }
+
+function loginAndUnpause(agent, user, queues) {
+    gAgent = agent[0];
+    gQueues = queues;
+    for( q in gQueues) {
+        ajaxQueueAction(gAgent, user, 'add', queues[q]);
+    };
+}
+
+
+function pbxExtensionStatus(agent, status) {
+    if (status === "not_inuse")
+        $('#caller-info').html("");
+}
+
+function logoutAgent() {
+    for( q in gQueues) {
+        ajaxQueueAction(gAgent, '', 'remove', gQueues[q]);
+    };
+    socket.close();
+    window.location.href = "agentpage";
+}
+
 
 

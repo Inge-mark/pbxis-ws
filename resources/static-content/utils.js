@@ -18,3 +18,21 @@ function replaceGlyphiconClass(id, newGlyphicon){
     }
     id.addClass(newGlyphicon);
 }
+
+function ajaxQueueAction(agent, agentName, action, queue) {
+    var localAction = action;
+    if (action === "unpause") {
+        localAction = "pause";
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/queue/'+localAction,
+        data: JSON.stringify(
+            {'agent': agent,
+                'queue': queue,
+                'memberName': agentName,
+                'paused': (action === "unpause" || action === "add") ? false : true}),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    });
+}

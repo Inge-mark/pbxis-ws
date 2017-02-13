@@ -1,3 +1,4 @@
+var socket;
 function pbxStart(agents, queues, summaryEvents) {
     $.ajax(
         {
@@ -7,9 +8,8 @@ function pbxStart(agents, queues, summaryEvents) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(ticket) {
-                var socket = new WebSocket(
+                socket = new WebSocket(
                     "ws" + document.location.origin.substring(4) + "/" + ticket + "/websocket");
-                console.log("***********" + "ws" + document.location.origin.substring(4) + "/" + ticket + "/websocket");
                 socket.onopen = function() { pbxConnection(true); }
                 socket.onclose = function() { console.log("Websocket closed");
                                               pbxConnection(false); }

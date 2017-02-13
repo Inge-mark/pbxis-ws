@@ -7,14 +7,12 @@ var callsCharts, callsSLACharts
 function pbxAgentStatus(agent, queue, status) {
     if (!status) status = 'loggedoff';
     var agentQueueId = agent + '_' + queue + '_agent_status';
-    console.log("*************** Calling AgentStatus icon: " + agentQueueId + agentStaus[status])
     replaceGlyphiconClass($('#' + agentQueueId), agentStaus[status]);
 }
 
 function pbxExtensionStatus(agent, status) {
     if (status == -1) status = 'not_inuse';
     var agntSpanId = agent + '_ext_status';
-    console.log("*************** Calling change icon" + agntSpanId + agentStaus[status])
     replaceGlyphiconClass($('#' + agntSpanId), agentStaus[status])
 }
 

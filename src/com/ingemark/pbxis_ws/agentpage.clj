@@ -21,54 +21,40 @@
           [\"~{agnt}\"],
           [~(s/join \",\" (for [q qs] (str \\' q \\')))],
           false);
-      });
-      $(function() {
-        initUserAgent(\"~{agentUri}\", \"~{wsServer}\", \"~{agnt}\", \"~{localpass}\");
+        loginAndUnpause([\"~{agnt}\"], \"~{user}\",\n
+        [~(s/join \",\" (for [q qs] (str \\' q \\')))]);
       });
 
       $(function () {
         $('[data-toggle=\"tooltip\"]').tooltip()});"))
        [:body
         [:div {:class "container"}
+         [:div {:class "jumbotron"}
+          [:h1 "Agent page"]
+          [:h3 (<< "Logged in: ~{user} (~{agnt})")]]
          [:div {:class "row" :style "min-height: 1vw" }]
          [:div {:class "row"}
           [:div {:class "col-xs-6"}
            [:div {:class "row text-center"}
+            [:div {:class "col-xs-8"}
+             "Queue name"]
             [:div {:class "col-xs-4"}
-             "queue-name"]
-            [:div {:class "col-xs-4"}
-             "status"]
-            [:div {:class "col-xs-4"}
-             "waiting"]]
+             "Status on queue"]]
            (for [q qs]
              [:div {:class "row text-center"}
-              [:div {:class "col-xs-4"}
-               [:p q]]
+              [:div {:class "col-xs-8"}
+               [:p (<< "~{q} - ") [:span {:id (<< "~{q}_queue_count") :class "badge"}]]]
               [:div {:class "col-xs-4"}
                [:span {:id (<< "~{q}_agent_status") :class "glyphicon glyphicon-pause agent-glyphico"
                        :data-toggle "tooltip"
-                       :title "change state on queue"}]]
-              [:div {:id (<< "~{q}_queue_count") :class "col-xs-4"}
-               "0"]])]
+                       :title "change state on queue"}]]])]
           [:div {:class "col-xs-6"}
-           [:div {:class "row" :style "min-height: 1.5vw"}]
            [:div {:class "row"}
-            [:div {:class "col-xs-4"}
-             [:p "caller number"]]
+            [:div {:class "col-xs-10 callerinfo-font"}
+             [:p {:id "caller-info"}
+              "free"]]
             [:div {:class "col-xs-2"}
-             [:span {:class "glyphicon glyphicon-earphone agent-glyphico"
-                     :data-toggle "tooltip" :title "answer" :style "color:green"}]]
-            [:div {:class "col-xs-4"}
-             [:p "talking to"]]
-            [:div {:class "col-xs-2"}
-             [:span {:class "glyphicon glyphicon-earphone agent-glyphico"
-                     :data-toggle "tooltip" :title "hangup" :style "color:red"}]]]
-           [:div {:class "row"}
-            [:div {:class "col-xs-4"}
-             [:input {:id "number-to-dial" :type "text" :placeholder "number to dial"}]]
-            [:div {:class "col-xs-2"}
-             [:span {:id "click-to-dial" :class "glyphicon glyphicon-earphone agent-glyphico"
-                     :data-toggle "tooltip" :title "dial" :style "color:green"}]]]]]]
+             [:button {:class "btn btn-block btn-danger" :onclick "logoutAgent();"} "Logout"]]]]]]
         [:video {:id "localVideo" :muted "mute"}]
         [:video {:id "remoteVideo"}]])
      r/response (r/content-type "text/html") (r/charset "UTF-8"))))

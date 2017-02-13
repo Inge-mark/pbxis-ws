@@ -1,4 +1,5 @@
 function pbxStart(agents, queues, summaryEvents) {
+
     $.ajax(
         {
             type: "POST",
@@ -19,7 +20,7 @@ function pbxStart(agents, queues, summaryEvents) {
                                eventSource.close();
                            }
                        }
-                                                                    ); });
+                       ); });
             }
         }
     )
