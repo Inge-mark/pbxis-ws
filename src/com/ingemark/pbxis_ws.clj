@@ -35,6 +35,7 @@
 (defonce agents (atom {}))
 (defonce sessions (atom {}))
 (defonce agents-queues (atom {}))
+(defonce extensions (atom {}))
 (defonce config (atom {}))
 
 (def EVENT-BURST-MILLIS 100)
@@ -186,9 +187,9 @@
       :middlewares [wrap-params wrap-json-params wrap-keyword-params
                     wrap-file-info (wrap-resource "static-content")
                     wrap-log-request wrap-mockable]
-      ["login"] {:get {:params [loginerror]
-                       :response (loginpage loginerror)}
-                 :post {:params [user pass local localpass]
+      ["login"] {:get  {:params   [loginerror]
+                        :response (loginpage loginerror (:ex @extensions))}
+                 :post {:params   [user pass local localpass]
                         :response (login user pass local localpass)}}
       ["agentpage"] {:middlewares [logged?]
                      :get         {:params   [token]
@@ -207,37 +208,38 @@
                                                    wsServer (get @config :wsServer)]
                                                (agentpage agnt user localpass qs agentUri wsServer))}}
       ["client" type [agnts split] [qs split]] {:get {:response (homepage type agnts qs)}}
-      ["wallboard" type [qs split]] {:get {:params [summaryEvents]
+      ["wallboard" type [qs split]] {:get {:params   [summaryEvents]
                                            :response (wallboard type qs {:summaryEvents summaryEvents})}}
       ["stop"] {:post {:response (ok (stop))}}
       [ticket "long-poll"] {:get {:response (ok (long-poll ticket))}}
       [ticket "websocket"] {:get (ah/wrap-aleph-handler (websocket-events ticket))}
       [ticket "sse"] {:get {:response (ok (sse-channel ticket))}}
       ["ticket"] {:post {:params [agents queues summaryEvents] :response (ok (ticket-for agents queues summaryEvents))}}
-      ["originate" src dest] {:post {:params [callerId variables]
+      ["originate" src dest] {:post {:params   [callerId variables]
                                      :response (ok (px/originate-call src dest
-                                                     :caller-id callerId :variables variables))}}
-      ["redirect-to" dest] {:post {:params [agent-or-channel]
+                                                                      :caller-id callerId :variables variables))}}
+      ["redirect-to" dest] {:post {:params   [agent-or-channel]
                                    :response (ok (px/redirect-call agent-or-channel dest))}}
-      ["bridged-channels"] {:get {:params [extension]
+      ["bridged-channels"] {:get {:params   [extension]
                                   :response (ok (px/find-channels extension))}}
-      ["park-and-announce"] {:post {:params [agent-or-channel]
+      ["park-and-announce"] {:post {:params   [agent-or-channel]
                                     :response (ok (px/park-and-announce agent-or-channel))}}
-      ["queue" &] {:get [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
-       :post [[action]
-              #(ok (as-> (keyword action) action
-                     (px/queue-action action
-                       (select-keys (% :params)
-                         (into [:queue]
-                           (condp = action
-                             :add [:agent :memberName :paused]
-                             :pause [:agent :paused]
-                             :remove [:agent]
-                             nil))))))]})))
+      ["queue" &] {:get  [["status"] {:params [queue] :response (ok (px/queue-status queue))}]
+                   :post [[action]
+                          #(ok (as-> (keyword action) action
+                                     (px/queue-action action
+                                                      (select-keys (% :params)
+                                                                   (into [:queue]
+                                                                         (condp = action
+                                                                           :add [:agent :memberName :paused]
+                                                                           :pause [:agent :paused]
+                                                                           :remove [:agent]
+                                                                           nil))))))]})))
 
 (defn start []
   (let [cfg (read (java.io.PushbackReader. (io/reader "pbxis-config.clj")))
         _ (swap! agents conj (read (java.io.PushbackReader. (io/reader "agents.clj"))))
+        _ (swap! extensions conj (read (java.io.PushbackReader. (io/reader "extensions.clj"))))
         _ (swap! agents-queues conj (read (java.io.PushbackReader. (io/reader "agents-queues.clj"))))
         _ (swap! config conj cfg)
         {{:keys [host username password]} :ami, :keys [port]} cfg
