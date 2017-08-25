@@ -35,7 +35,6 @@ function logoutAgent() {
     for( q in gQueues) {
         ajaxQueueAction(gAgent, '', 'remove', gQueues[q]);
     };
-    socket.close();
     window.location.href = "agentpage";
 }
 

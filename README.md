@@ -1,15 +1,15 @@
 # pbxis-ws
 
-Exposes functions of the [PBXIS](https://github.com/inge-mark/pbxis) library as a RESTful web service and can provide the event stream directly to a web browser over HTTP long polling, Server-Sent Events, and WebSocket. The project also includes a ready-to-test HTML page which displays the status of an arbitrary number of agents and queues. The relative URL of the page is `/client/<tech>/<agents>/<queues>`, where `<tech>` is one of `long-poll`, `sse`, or `websocket`, `<agents>` is a comma-separated list of agents' extensions, and `<queues>` is a comma-separated list of queue names. For example,
-
-`http://localhost:58615/client/websocket/147,149/q1,q2`
-
-will open a page that tracks agents 147, 149 (these are their extension numbers) and queues q1, q2, using WebSocket to receive the event stream.
-
-Also there are two additional example pages:
- 
- - `Wallboard` available at `wallboard/<tech>/<queues>`. This page is an example how to build wallboard application based on pbxis-ws.
- - `Agen page` available at `agentpage`. Page will ask for user login and local number. After login user will be automatically sign in to queues configured in `agent-queues.clj`. 
+    Exposes functions of the [PBXIS](https://github.com/inge-mark/pbxis) library as a RESTful web service and can provide the event stream directly to a web browser over HTTP long polling, Server-Sent Events, and WebSocket. The project also includes a ready-to-test HTML page which displays the status of an arbitrary number of agents and queues. The relative URL of the page is `/client/<tech>/<agents>/<queues>`, where `<tech>` is one of `long-poll`, `sse`, or `websocket`, `<agents>` is a comma-separated list of agents' extensions, and `<queues>` is a comma-separated list of queue names. For example,
+    
+    `http://localhost:58615/client/websocket/147,149/q1,q2`
+    
+    will open a page that tracks agents 147, 149 (these are their extension numbers) and queues q1, q2, using WebSocket to receive the event stream.
+    
+    Also there are two additional example pages:
+     
+     - `Wallboard` available at `wallboard/<tech>/<queues>`. This page is an example how to build wallboard application based on pbxis-ws.
+     - `Agen page` available at `agentpage`. Page will ask for user login and local number. After login user will be automatically sign in to queues configured in `agent-queues.clj`. 
 
 ##Download
 

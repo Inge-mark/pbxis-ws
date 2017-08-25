@@ -79,7 +79,6 @@ function pbxWallboard(e) {
                         if (members[i]['incall'])
                             td_incall="info";
                         row += "<td class='" + td_incall +"'><span class='glyphicon " + ico + "'></span></td>";
-                        console.log(row);
                     }
                 }
                 row += '</tr>'

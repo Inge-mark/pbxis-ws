@@ -54,7 +54,7 @@
              [:p {:id "caller-info"}
               "free"]]
             [:div {:class "col-xs-2"}
-             [:button {:class "btn btn-block btn-danger" :onclick "logoutAgent();"} "Logout"]]]]]]
+             [:a {:class "btn btn-danger" :onclick "logoutAgent();"} "Logout"]]]]]]
         [:video {:id "localVideo" :muted "mute"}]
         [:video {:id "remoteVideo"}]])
      r/response (r/content-type "text/html") (r/charset "UTF-8"))))

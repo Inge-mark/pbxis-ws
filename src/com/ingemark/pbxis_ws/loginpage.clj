@@ -21,7 +21,7 @@
           [:form {:id "form" :method "POST"}
            [:input {:type "text" :name "user" :placeholder "Username"}]
            [:input {:type "password" :name "pass" :placeholder "Password"}]
-           [:select {:id "local" :class "form-control"} (for [ex extensions] [:option ex])]
+           [:select {:id "local" :name "local" :class "form-control"} (for [ex extensions] [:option ex])]
            [:input {:type "password" :name "localpass" :placeholder "Local password"}]
            [:input {:id "submit" :type "submit" :name "login" :class "login loginmodal-submit" :value "Login"}]]]]])
      r/response (r/content-type "text/html") (r/charset "UTF-8"))))

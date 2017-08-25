@@ -7,6 +7,7 @@ function pbxStart(agents, queues, summaryEvents) {
             data: JSON.stringify({agents: agents, queues: queues, summaryEvents: summaryEvents}),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            async: false,
             success: function(ticket) {
                 eventSource = new EventSource("/"+ticket+"/sse");
                 eventSource.onopen = function() { pbxConnection(true); }

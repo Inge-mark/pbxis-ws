@@ -27,6 +27,7 @@ function ajaxQueueAction(agent, agentName, action, queue) {
     $.ajax({
         type: 'POST',
         url: '/queue/'+localAction,
+        async: false,
         data: JSON.stringify(
             {'agent': agent,
                 'queue': queue,
