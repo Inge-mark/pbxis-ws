@@ -6,3 +6,5 @@ pom.xml*
 .lein-repl-history
 .idea
 *.iml
+/.lein-failures
+/.nrepl-port
