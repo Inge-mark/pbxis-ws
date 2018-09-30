@@ -18,8 +18,8 @@
             "publish-latest" ["with-checkout" ":latest"
                               "thrush" "uberjar," "bundle" ".," "upload" "bundle"]}
   :plugins [[lein-nix "0.1.9"]]
-  :dependencies [[com.ingemark/pbxis "2.0.3"]
-                 [org.clojure/clojure "1.7.0"]
+  :dependencies [[com.ingemark/pbxis "2.0.5"]
+                 [org.clojure/clojure "1.9.0"]
                  [org.clojure/core.incubator "0.1.2"]
                  [org.clojure/data.json "0.2.1"]
                  [net.cgrand/moustache "1.2.0-alpha2"]
@@ -30,4 +30,7 @@
                  [ch.qos.logback/logback-classic "1.2.3"]]
   :jvm-opts ["-Dlogback.configurationFile=logback.xml"]
   :main com.ingemark.pbxis-ws.main
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :dev {:dependencies [[org.clojure/test.check "0.10.0-alpha3"]
+                                  [org.clojure/spec.alpha "0.2.176"]
+                                  [org.clojure/core.specs.alpha "0.2.44"]]}})

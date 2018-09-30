@@ -1,9 +1,9 @@
 (ns com.ingemark.pbxis-ws.homepage
-  (require [clojure.string :as s]
-           [ring.util.response :as r]
-           [clojure.core.strint :refer (<<)]
-           [hiccup [core :as h] [element :as e] [page :as p]]
-           [com.ingemark.pbxis-ws.utils :as u]))
+  (:require [clojure.string :as s]
+            [ring.util.response :as r]
+            [clojure.core.strint :refer (<<)]
+            [hiccup [core :as h] [element :as e] [page :as p]]
+            [com.ingemark.pbxis-ws.utils :as u]))
 
 (defn- texts [agnts qs]
   (s/join "," (concat (for [ag agnts, q qs] (<< "'~{ag}_~{q}_agent_status'"))

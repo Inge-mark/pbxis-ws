@@ -1,5 +1,5 @@
 (ns com.ingemark.pbxis-ws.wallboard
-  (require [clojure.string :as s]
+  (:require [clojure.string :as s]
            [ring.util.response :as r]
            [clojure.core.strint :refer (<<)]
            [hiccup [core :as h] [element :as e] [page :as p]]

@@ -10,7 +10,7 @@
 ;;    limitations under the License.
 
 (ns com.ingemark.pbxis-ws
-  (require (com.ingemark [pbxis :as px] [logging :refer :all])
+  (:require (com.ingemark [pbxis :as px] [logging :refer :all])
            [com.ingemark.pbxis.util :as pu :refer (>?>)]
            [com.ingemark.pbxis-ws.homepage :refer :all]
            [com.ingemark.pbxis-ws.wallboard :refer :all]
@@ -28,7 +28,7 @@
                             [resource :refer (wrap-resource)]
                             [file-info :refer (wrap-file-info)]
                             [cookies :refer (wrap-cookies)]))
-  (import java.util.concurrent.TimeUnit))
+  (:import java.util.concurrent.TimeUnit))
 
 (defonce poll-timeout (atom [30 TimeUnit/SECONDS]))
 (defonce unsub-delay (atom [15 TimeUnit/SECONDS]))

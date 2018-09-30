@@ -1,8 +1,8 @@
 (ns com.ingemark.pbxis-ws.loginpage
-  (require [clojure.string :as s] [ring.util.response :as r]
-           [clojure.core.strint :refer (<<)]
-           [hiccup [core :as h] [element :as e] [page :as p]]
-           [com.ingemark.pbxis-ws.utils :as u]))
+  (:require [clojure.string :as s] [ring.util.response :as r]
+            [clojure.core.strint :refer (<<)]
+            [hiccup [core :as h] [element :as e] [page :as p]]
+            [com.ingemark.pbxis-ws.utils :as u]))
 
 
 (defn loginpage
