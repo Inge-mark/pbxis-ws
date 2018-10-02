@@ -9,7 +9,7 @@
   (let [type "websocket"]
     (->
      (p/html5
-       {:xml? true}
+       {:xml? false}
        (u/common-head
          [:script {:src "sip-0.7.5.min.js" :type "text/javascript"}])
        (p/include-js
