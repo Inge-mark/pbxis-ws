@@ -31,7 +31,7 @@ POST /originate/148/1562830
 
 ### JSON representation of an event
 
-An event is represented as a JSON object, such as `{"type":"queueCount", "queue":"q1", "count":1}`. See the documentation of [events reported by PBXIS](https://github.com/Inge-mark/pbxis/tree/develop#reported-events) and note that property names such as `:agent` occur in JSON as simple strings, such as `"agent"`.
+An event is represented as a JSON object, such as `{"type":"queueCount", "queue":"q1", "count":1}`. See the documentation of [events reported by PBXIS](https://github.com/Ingemark/pbxis/tree/develop#reported-events) and note that property names such as `:agent` occur in JSON as simple strings, such as `"agent"`.
 
 
 ## API
@@ -124,7 +124,7 @@ Places a long-polling request. The response will be received once an event is av
 
 **JSON response:** `[event1, event2, ...]`.
 
-See [pbxis-long-poll.js](https://github.com/Inge-mark/pbxis-ws/blob/master/static-content/pbxis-long-poll.js) in this project for a complete example of usage in JavaScript.
+See [pbxis-long-poll.js](https://github.com/Ingemark/pbxis-ws/blob/master/static-content/pbxis-long-poll.js) in this project for a complete example of usage in JavaScript.
 
 ### WebSocket request
 
@@ -137,7 +137,7 @@ In JavaScript, use e.g.
 ```JavaScript
 new WebSocket("ws://example.org/" + ticket + "/websocket");
 ```
-Requests a Websocket connection. Each message received contains one JSON object corresponding to one PBXIS event. See [pbxis-websocket.js](https://github.com/Inge-mark/pbxis-ws/blob/master/static-content/pbxis-websocket.js) in this project for a complete example of usage in JavaScript.
+Requests a Websocket connection. Each message received contains one JSON object corresponding to one PBXIS event. See [pbxis-websocket.js](https://github.com/Ingemark/pbxis-ws/blob/master/static-content/pbxis-websocket.js) in this project for a complete example of usage in JavaScript.
 
 
 ### Server-Sent Events request
@@ -152,7 +152,7 @@ data: {"queue":"q1", "count":1}
 ```
 A special event type is `close`, which means that there will be no further events and the connection will be closed. Since SSE specifies automatic reconnection, it is important that the client reacts to this event by closing the `EventSource` at its side.
 
-See [pbxis-sse.js](https://github.com/Inge-mark/pbxis-ws/blob/master/static-content/pbxis-sse.js) in this project for a complete example of usage in JavaScript.
+See [pbxis-sse.js](https://github.com/Ingemark/pbxis-ws/blob/master/static-content/pbxis-sse.js) in this project for a complete example of usage in JavaScript.
 
 
 ## Example usage scenario

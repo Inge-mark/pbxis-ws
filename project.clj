@@ -1,6 +1,6 @@
 (defproject com.ingemark/pbxis-ws "2.0.4-SNAPSHOT"
   :description "Asterisk Call Center Web Service"
-  :url "http://www.inge-mark.hr"
+  :url "http://www.ingemark.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :deploy-repositories [["bundle" "forge://pbxis-ws"]]
