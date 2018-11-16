@@ -20,7 +20,7 @@
 (defn wallboard [type qs summaryEvents]
   (->
    (p/html5
-    {:xml? true}
+    {:xml? false}
     (u/common-head)
     (p/include-js
       "/pbxis-client.js" (<< "/pbxis-~{type}.js") "/homepage.js"
