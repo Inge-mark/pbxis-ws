@@ -26,7 +26,6 @@
            (ring.middleware [params :refer (wrap-params)]
                             [keyword-params :refer (wrap-keyword-params)]
                             [resource :refer (wrap-resource)]
-                            [file-info :refer (wrap-file-info)]
                             [cookies :refer (wrap-cookies)]))
   (:import java.util.concurrent.TimeUnit))
 
@@ -185,7 +184,7 @@
   (ah/wrap-ring-handler
     (app
       :middlewares [wrap-params wrap-json-params wrap-keyword-params
-                    wrap-file-info (wrap-resource "static-content")
+                    (wrap-resource "static-content")
                     wrap-log-request wrap-mockable]
       ["login"] {:get  {:params   [loginerror]
                         :response (loginpage loginerror (:ex @extensions))}
