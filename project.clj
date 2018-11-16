@@ -25,7 +25,11 @@
                  [net.cgrand/moustache "1.2.0-alpha2"]
                  [hiccup "1.0.5"]
                  [ring/ring-core "1.7.0" :exclusions [javax.servlet/servlet-api]]
-                 [aleph "0.3.3"]
+                 [io.netty/netty "3.9.9.Final"] ; upgrade from Aleph's default
+                                                ; Netty 3.9.0 to 3.9.9 to fix
+                                                ; the problem with content
+                                                ; length and gzip encoding
+                 [aleph "0.3.3" :exclusions [io.netty/netty]]
                  [org.slf4j/slf4j-api "1.7.25"]
                  [ch.qos.logback/logback-classic "1.2.3"]]
   :jvm-opts ["-Dlogback.configurationFile=logback.xml"]
