@@ -9,7 +9,7 @@
   ([loginerror extensions]
    (->
      (p/html5
-      {:xml? false}
+      {:xml? true}
       (u/common-head [:script {:src "login.js" :type "text/javascript"}])
       [:body
        [:div {:class "modal-dialog"}
