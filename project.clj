@@ -1,8 +1,7 @@
 (defproject com.ingemark/pbxis-ws "2.0.8-SNAPSHOT"
   :description "Asterisk Call Center Web Service"
   :url "http://www.ingemark.com"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :license {:name "Apache License, Version 2.0"}
   :deploy-repositories [["bundle" "forge://pbxis-ws"]]
   :lein-bundle {:filespec ["README.md" "logback.xml"
                            ["pbxis-config.clj.template" "pbxis-config.clj"]]}
