@@ -1,4 +1,4 @@
-(defproject com.ingemark/pbxis-ws "2.0.8-SNAPSHOT"
+(defproject com.ingemark/pbxis-ws "2.0.8"
   :description "Asterisk Call Center Web Service"
   :url "http://www.ingemark.com"
   :license {:name "Apache License, Version 2.0"}
